@@ -1,0 +1,11 @@
+{
+  "name": "@rssarti/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "files": ["base.json", "library.json", "node.json"],
+  "exports": {
+    "./base.json": "./base.json",
+    "./library.json": "./library.json",
+    "./node.json": "./node.json"
+  }
+}

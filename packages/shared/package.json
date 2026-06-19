@@ -1,0 +1,14 @@
+{
+  "name": "@rssarti/pix-shared",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js", "require": "./dist/index.cjs" } },
+  "files": ["dist"],
+  "scripts": { "build": "tsup", "test": "jest --passWithNoTests", "lint": "eslint src", "typecheck": "tsc --noEmit" },
+  "dependencies": { "axios": "^1.7.9", "zod": "^3.24.1" },
+  "devDependencies": { "@rssarti/eslint-config": "workspace:*", "@rssarti/jest-config": "workspace:*", "@rssarti/tsconfig": "workspace:*", "@types/node": "^22.15.30", "jest": "^29.7.0", "ts-jest": "^29.3.4", "tsup": "^8.5.0", "typescript": "^5.8.3" }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "@rssarti/pix-provider-itau",
+  "version": "0.0.1",
+  "license": "MIT",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "import": "./dist/index.js", "require": "./dist/index.cjs", "types": "./dist/index.d.ts" } },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "test": "jest --passWithNoTests",
+    "lint": "eslint src",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@rssarti/pix-core": "workspace:*",
+    "@rssarti/pix-provider-mock": "workspace:*",
+    "@rssarti/pix-shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@rssarti/jest-config": "workspace:*",
+    "@rssarti/tsconfig": "workspace:*",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2"
+  }
+}

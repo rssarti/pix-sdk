@@ -1,0 +1,22 @@
+{
+  "name": "example-node",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@rssarti/pix-provider-efi": "workspace:*",
+    "@rssarti/pix-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@rssarti/tsconfig": "workspace:*",
+    "@types/node": "^22.10.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
