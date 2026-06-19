@@ -1,0 +1,25 @@
+{
+  "name": "example-woovi",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "dev:mock": "cross-env WOOVI_MODE=mock tsx src/index.ts",
+    "dev:sandbox": "cross-env WOOVI_MODE=sandbox tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@rssarti/pix-provider-woovi": "workspace:*",
+    "@rssarti/pix-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@rssarti/tsconfig": "workspace:*",
+    "@types/node": "^22.10.2",
+    "cross-env": "^7.0.3",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
