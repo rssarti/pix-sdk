@@ -5,7 +5,7 @@
 [![CI](https://img.shields.io/github/actions/workflow/status/sarti/pix-sdk/ci.svg)](https://github.com/sarti/pix-sdk/actions)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen)](https://nodejs.org)
 
-SDK TypeScript para integração com PIX no Brasil. Arquitetura **Ports & Adapters** (Clean Architecture), API canônica unificada e adapters para múltiplos PSPs. Inclui mock server compatível com subset da API Bacen 2.9.0, suporte a **PIX Automático**, webhooks com verificação HMAC, plugins extensíveis e integração NestJS.
+SDK TypeScript pra brincar com PIX no Brasil sem chorar no Slack às 23h. Você escreve uma vez, troca de banco/PSP quando quiser — é plugar outro adapter e vida que segue. Tem mock server local (nada de ficar implorando acesso de sandbox), **PIX Automático**, webhooks com HMAC, plugins pra customizar até o talo e módulo NestJS pros fãs de `@Injectable()`. Arquitetura organizada sim, mas o foco é você colocar cobrança no ar e ir tomar um café ☕
 
 ## Índice
 
