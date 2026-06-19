@@ -46,6 +46,7 @@ pnpm add @rssarti/pix-provider-efi
 # @rssarti/pix-provider-mercadopago
 # @rssarti/pix-provider-itau
 # @rssarti/pix-provider-sicoob
+# @rssarti/pix-provider-woovi
 ```
 
 Integração NestJS:
@@ -171,9 +172,11 @@ pix-sdk/
 │   ├── provider-efi/
 │   ├── provider-mercadopago/
 │   ├── provider-itau/
-│   └── provider-sicoob/
+│   ├── provider-sicoob/
+│   └── provider-woovi/
 ├── apps/
-│   └── example-node/         # Demo end-to-end
+│   ├── example-node/         # Demo end-to-end (Bacen mock)
+│   └── example-woovi/        # Demo Woovi (mock ou sandbox)
 └── tooling/                  # ESLint, Jest, TSConfig compartilhados
 ```
 
@@ -299,9 +302,27 @@ Objeto `Charge` retornado pelo SDK:
 
 Todos implementam a interface `PixProvider`. Troca de provider = uma linha no construtor do `PixSDK`.
 
+### Status dos adapters (sem enrolação)
+
+| Provider | Mock local | Sandbox | Produção | Situação |
+|----------|:----------:|:-------:|:--------:|----------|
+| **Mock** | ✅ | — | — | Sempre local — Bacen simulado |
+| **Woovi** | ✅ | ✅ | ✅ | **Adapter real** — cobrança, consulta, refund, webhook e assinatura |
+| **Efi** | ✅ | 🚧 | 🚧 | Pacote pronto, API real ainda não |
+| **Mercado Pago** | ✅ | 🚧 | 🚧 | Pacote pronto, API real ainda não |
+| **Itaú** | ✅ | 🚧 | 🚧 | Pacote pronto, API real ainda não |
+| **Sicoob** | ✅ | 🚧 | 🚧 | Pacote pronto, API real ainda não |
+
+**Legenda:** ✅ integração real · 🚧 só mock por enquanto (o adapter existe, mas ainda delega pro mock-server — trocar `mode` pra sandbox/prod **não** chama o PSP de verdade)
+
+> Quer testar sandbox/prod hoje? Use **Woovi**. Os outros estão na fila.
+
+### Pacotes e credenciais
+
 | Provider | Pacote | Env prefix | Credenciais |
 |----------|--------|------------|-------------|
 | Mock | `@rssarti/pix-sdk` (re-export) | — | `baseUrl` |
+| Woovi | `@rssarti/pix-provider-woovi` | `WOOVI` | `appId` |
 | Efi | `@rssarti/pix-provider-efi` | `EFI` | `clientId`, `clientSecret`, `certPath` |
 | Mercado Pago | `@rssarti/pix-provider-mercadopago` | `MP` | `accessToken` |
 | Itaú | `@rssarti/pix-provider-itau` | `ITAU` | `clientId`, `clientSecret`, `certPath`, `keyPath` |
@@ -316,6 +337,25 @@ const pix = new PixSDK({
   provider: new MockProvider({ baseUrl: 'http://localhost:3333' }),
 });
 ```
+
+### Woovi (sandbox/prod real)
+
+```typescript
+import { PixSDK } from '@rssarti/pix-sdk';
+import { WooviProvider } from '@rssarti/pix-provider-woovi';
+
+const pix = new PixSDK({
+  provider: new WooviProvider({
+    mode: 'sandbox',                    // mock | sandbox | production
+    appId: process.env.WOOVI_APP_ID,
+  }),
+});
+
+const charge = await pix.createCharge({ amount: 10, description: 'Pedido #123' });
+console.log(charge.id, charge.pixCopyPaste); // correlationID + brCode
+```
+
+Demo: `pnpm --filter example-woovi dev` (com `WOOVI_MODE=sandbox` e `WOOVI_APP_ID`).
 
 ### Efi
 
@@ -368,6 +408,8 @@ Cada provider aceita `mode`:
 | `production` | URL de produção do PSP |
 
 Resolução de URL: config explícita → env `{PREFIX}_*_URL` → fallback `PIX_MOCK_URL`.
+
+> **Woovi** usa sandbox/prod de verdade. Nos demais adapters, sandbox/prod ainda não estão implementados — veja a tabela de status acima.
 
 ---
 
