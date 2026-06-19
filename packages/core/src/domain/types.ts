@@ -1,4 +1,4 @@
-export type ProviderName = 'mock' | 'efi' | 'mercadopago' | 'itau' | 'sicoob';
+export type ProviderName = 'mock' | 'efi' | 'mercadopago' | 'itau' | 'sicoob' | 'woovi';
 
 export type ChargeStatus = 'ACTIVE' | 'COMPLETED' | 'REMOVED' | 'EXPIRED';
 

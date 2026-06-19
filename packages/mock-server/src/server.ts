@@ -11,8 +11,9 @@ import {
 } from '@rssarti/pix-shared';
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { URL } from 'node:url';
+import { createWooviStore, handleWooviRoute, type WooviStore } from './woovi.mock.js';
 
-interface Store {
+interface Store extends WooviStore {
   cobs: Map<string, BacenCob>;
   pix: Map<string, BacenPix>;
   devolucoes: Map<string, BacenDevolucao>;
@@ -22,6 +23,7 @@ interface Store {
 
 function createStore(): Store {
   return {
+    ...createWooviStore(),
     cobs: new Map(),
     pix: new Map(),
     devolucoes: new Map(),
@@ -225,6 +227,9 @@ export function createMockServer(store = createStore()) {
         sendJson(res, 200, { status: 'ok' });
         return;
       }
+
+      const handled = await handleWooviRoute(store, method, path, readBody, req, res, sendJson);
+      if (handled) return;
 
       sendJson(res, 404, { title: 'Not found' });
     } catch (error) {

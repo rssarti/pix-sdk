@@ -1,13 +1,10 @@
 import { PixError, PixValidationError } from '../domain/errors.js';
 import type {
-  CancelInput,
   Charge,
-  CreateAuthorizationInput,
   CreateChargeInput,
   PixWebhookEvent,
   Refund,
   RefundInput,
-  ScheduleInput,
   WebhookHeaders,
 } from '../domain/types.js';
 import type { PixPlugin, PixProvider } from '../ports/pix-provider.port.js';

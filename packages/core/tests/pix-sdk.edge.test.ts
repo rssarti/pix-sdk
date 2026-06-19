@@ -1,4 +1,4 @@
-import { PixSDK, MetricsPlugin, pixEventEmitter } from '../src/index.js';
+import { PixSDK, MetricsPlugin } from '../src/index.js';
 import { InMemoryProvider } from './in-memory.provider.js';
 import { PixError } from '../src/domain/errors.js';
 import { HmacWebhookVerifier } from '../src/webhooks/webhook.service.js';
