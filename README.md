@@ -11,6 +11,7 @@ SDK TypeScript pra brincar com PIX no Brasil sem chorar no Slack às 23h. Você 
 
 - [Instalação](#instalação)
 - [Quick Start](#quick-start)
+- [Rodando os exemplos](#rodando-os-exemplos)
 - [Arquitetura](#arquitetura)
 - [Estrutura do monorepo](#estrutura-do-monorepo)
 - [Uso do SDK](#uso-do-sdk)
@@ -109,6 +110,67 @@ console.log(charge.txid, charge.pixCopyPaste);
 pnpm --filter @rssarti/pix-mock-server dev   # terminal 1
 pnpm --filter example-node dev             # terminal 2
 ```
+
+---
+
+## Rodando os exemplos
+
+Apps em `apps/` leem variáveis de `process.env`. Você pode passar tudo inline no console — sem `.env`.
+
+**Terminal 1 — mock server (obrigatório em modo `mock`)**
+
+```bash
+pnpm --filter @rssarti/pix-mock-server dev
+```
+
+### `example-node` (Efi + Bacen mock)
+
+**Terminal 2**
+
+```bash
+# bash / macOS / Linux / Git Bash
+PIX_MOCK_URL=http://localhost:3333 pnpm --filter example-node dev
+
+# PowerShell
+$env:PIX_MOCK_URL="http://localhost:3333"; pnpm --filter example-node dev
+```
+
+`PIX_MOCK_URL` é opcional — default `http://localhost:3333`.
+
+### `example-woovi` (Woovi mock ou sandbox)
+
+**Modo mock** (mock-server no terminal 1):
+
+```bash
+# bash
+WOOVI_MODE=mock pnpm --filter example-woovi dev
+
+# PowerShell
+$env:WOOVI_MODE="mock"; pnpm --filter example-woovi dev
+
+# ou scripts do pacote (cross-env, qualquer SO)
+pnpm --filter example-woovi dev:mock
+```
+
+**Modo sandbox** (API Woovi real — `WOOVI_APP_ID` obrigatório):
+
+```bash
+# bash
+WOOVI_MODE=sandbox WOOVI_APP_ID=seu-app-id pnpm --filter example-woovi dev
+
+# PowerShell
+$env:WOOVI_MODE="sandbox"; $env:WOOVI_APP_ID="seu-app-id"; pnpm --filter example-woovi dev
+
+# ou
+WOOVI_APP_ID=seu-app-id pnpm --filter example-woovi dev:sandbox
+```
+
+| Variável | Default | Uso no exemplo |
+|----------|---------|----------------|
+| `WOOVI_MODE` | `mock` | `mock` \| `sandbox` \| `production` |
+| `WOOVI_APP_ID` | — | Obrigatório fora de `mock` |
+| `WOOVI_MOCK_URL` | `PIX_MOCK_URL` → `http://localhost:3333` | URL do mock-server |
+| `PIX_MOCK_URL` | `http://localhost:3333` | Fallback compartilhado |
 
 ---
 
@@ -355,7 +417,7 @@ const charge = await pix.createCharge({ amount: 10, description: 'Pedido #123' }
 console.log(charge.id, charge.pixCopyPaste); // correlationID + brCode
 ```
 
-Demo: `pnpm --filter example-woovi dev` (com `WOOVI_MODE=sandbox` e `WOOVI_APP_ID`).
+Demo: veja [Rodando os exemplos](#rodando-os-exemplos).
 
 ### Efi
 
@@ -733,6 +795,16 @@ Exports disponíveis: `PixModule`, `PixService`, `PixWebhookGuard`, `PixWebhook`
 | `PIX_MOCK_URL` | `http://localhost:3333` | URL do mock-server |
 | `PIX_WEBHOOK_SECRET` | — | Segredo HMAC para validação de webhooks |
 | `PORT` | `3333` | Porta do mock-server (Docker/CLI) |
+
+### Woovi
+
+| Variável | Default | Descrição |
+|----------|---------|-----------|
+| `WOOVI_MODE` | `mock` | `mock`, `sandbox`, `production` |
+| `WOOVI_APP_ID` | — | App ID OpenPix/Woovi |
+| `WOOVI_MOCK_URL` | `PIX_MOCK_URL` | URL do mock-server |
+| `WOOVI_SANDBOX_URL` | — | Override URL sandbox |
+| `WOOVI_PRODUCTION_URL` | — | Override URL produção |
 
 ### Por provider (`{PREFIX}` = `EFI`, `MP`, `ITAU`, `SICOOB`)
 
